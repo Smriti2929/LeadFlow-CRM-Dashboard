@@ -2,6 +2,7 @@
 
 A beginner-to-intermediate level Customer Relationship Management (CRM) dashboard built with plain HTML, CSS, and Vanilla JavaScript. No frameworks, no backend, no APIs.
 
+Site is live at https://smriti2929.github.io/LeadFlow-CRM-Dashboard/
 ---
 
 ## 📌 Project Overview
