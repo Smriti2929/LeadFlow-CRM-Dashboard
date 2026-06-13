@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeadFlow CRM Dashboard</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ===== SIDEBAR ===== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">⚡</span>
+      <span class="logo-text">LeadFlow</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-section="dashboard">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-section="leads">
+        <span class="nav-icon">👥</span>
+        <span>All Leads</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <p>LeadFlow CRM v1.0</p>
+    </div>
+  </aside>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main class="main-content">
+
+    <!-- Top Bar -->
+    <header class="topbar">
+      <!-- Hamburger button for mobile -->
+      <button class="hamburger" id="hamburger" aria-label="Toggle sidebar">&#9776;</button>
+      <h1 class="page-title" id="page-title">Dashboard</h1>
+      <button class="btn btn-primary" id="openAddModal">+ Add Lead</button>
+    </header>
+
+    <!-- ===== DASHBOARD SECTION ===== -->
+    <section class="section" id="section-dashboard">
+
+      <!-- Summary Cards -->
+      <div class="cards-grid">
+        <div class="card card-total">
+          <div class="card-icon">📋</div>
+          <div class="card-info">
+            <span class="card-label">Total Leads</span>
+            <span class="card-value" id="count-total">0</span>
+          </div>
+        </div>
+        <div class="card card-new">
+          <div class="card-icon">🆕</div>
+          <div class="card-info">
+            <span class="card-label">New Leads</span>
+            <span class="card-value" id="count-new">0</span>
+          </div>
+        </div>
+        <div class="card card-contacted">
+          <div class="card-icon">📞</div>
+          <div class="card-info">
+            <span class="card-label">Contacted</span>
+            <span class="card-value" id="count-contacted">0</span>
+          </div>
+        </div>
+        <div class="card card-closed">
+          <div class="card-icon">✅</div>
+          <div class="card-info">
+            <span class="card-label">Closed</span>
+            <span class="card-value" id="count-closed">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Leads Preview -->
+      <div class="section-header">
+        <h2>Recent Leads</h2>
+        <a href="#" class="link-btn" id="viewAllLink">View All →</a>
+      </div>
+      <div class="table-wrapper">
+        <table class="leads-table" id="recent-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Company</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="recent-tbody">
+            <!-- Recent leads injected by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ===== ALL LEADS SECTION ===== -->
+    <section class="section hidden" id="section-leads">
+
+      <div class="section-header">
+        <h2>All Leads</h2>
+      </div>
+
+      <!-- Search & Filter Bar -->
+      <div class="toolbar">
+        <input
+          type="text"
+          id="searchInput"
+          class="search-input"
+          placeholder="🔍  Search by name or company..."
+        />
+        <select id="filterStatus" class="filter-select">
+          <option value="all">All Statuses</option>
+          <option value="New">New</option>
+          <option value="Contacted">Contacted</option>
+          <option value="Qualified">Qualified</option>
+          <option value="Closed">Closed</option>
+        </select>
+      </div>
+
+      <!-- Leads Table -->
+      <div class="table-wrapper">
+        <table class="leads-table" id="all-leads-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Company</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leads-tbody">
+            <!-- All leads injected by JS -->
+          </tbody>
+        </table>
+        <!-- Shown when no leads match search/filter -->
+        <p class="empty-msg hidden" id="emptyMsg">No leads found. Try a different search or filter.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== ADD / EDIT LEAD MODAL ===== -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 id="modal-title">Add New Lead</h2>
+        <button class="close-btn" id="closeModal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Hidden field to store lead ID when editing -->
+        <input type="hidden" id="leadId" />
+
+        <div class="form-group">
+          <label for="leadName">Full Name *</label>
+          <input type="text" id="leadName" placeholder="e.g. Rahul Sharma" />
+        </div>
+
+        <div class="form-group">
+          <label for="leadEmail">Email Address *</label>
+          <input type="email" id="leadEmail" placeholder="e.g. rahul@example.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="leadCompany">Company *</label>
+          <input type="text" id="leadCompany" placeholder="e.g. Infosys Ltd." />
+        </div>
+
+        <div class="form-group">
+          <label for="leadPhone">Phone Number</label>
+          <input type="tel" id="leadPhone" placeholder="e.g. +91 98765 43210" />
+        </div>
+
+        <div class="form-group">
+          <label for="leadStatus">Status *</label>
+          <select id="leadStatus">
+            <option value="New">New</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Qualified">Qualified</option>
+            <option value="Closed">Closed</option>
+          </select>
+        </div>
+
+        <!-- Error message shown on validation failure -->
+        <p class="form-error hidden" id="formError">Please fill in all required fields.</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelModal">Cancel</button>
+        <button class="btn btn-primary" id="saveLeadBtn">Save Lead</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DELETE CONFIRM MODAL ===== -->
+  <div class="modal-overlay hidden" id="deleteOverlay">
+    <div class="modal modal-sm">
+      <div class="modal-header">
+        <h2>Delete Lead</h2>
+        <button class="close-btn" id="closeDeleteModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <strong id="deleteLeadName"></strong>? This cannot be undone.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelDelete">Cancel</button>
+        <button class="btn btn-danger" id="confirmDelete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast notification -->
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
